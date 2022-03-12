@@ -1,71 +1,274 @@
+# Laravel Valuestore
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+[//]: # ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/bvtterfly/laravel-valuestore.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/bvtterfly/laravel-valuestore&#41;)
 
-# :package_description
+[//]: # ([![GitHub Tests Action Status]&#40;https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/run-tests?label=tests&#41;]&#40;https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3Arun-tests+branch%3Amain&#41;)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/:vendor_slug/:package_slug/run-tests?label=tests)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/:vendor_slug/:package_slug/Check%20&%20fix%20styling?label=code%20style)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+[//]: # ([![GitHub Code Style Action Status]&#40;https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/Check%20&%20fix%20styling?label=code%20style&#41;]&#40;https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain&#41;)
 
-1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/bvtterfly/laravel-valuestore.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/bvtterfly/laravel-valuestore&#41;)
 
-## Support us
+This package makes it easy to store and retrieve some loose values. The values are saved as JSON files. The package integrates with the Laravel filesystem by extending the `spatie/valuestore` package.
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
+It can be used like this:
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+```php
+use Bvttterfly\Valuestore\Valuestore;
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+$valuestore = Valuestore::make($filename);
+
+$valuestore->put('key', 'value');
+
+$valuestore->get('key'); // Returns 'value'
+
+$valuestore->has('key'); // Returns true
+
+// Specify a default value for when the specified key does not exist
+$valuestore->get('non existing key', 'default') // Returns 'default'
+
+$valuestore->put('anotherKey', 'anotherValue');
+
+// Put multiple items in one go
+$valuestore->put(['ringo' => 'drums', 'paul' => 'bass']);
+
+$valuestore->all(); // Returns an array with all items
+
+$valuestore->forget('key'); // Removes the item
+
+$valuestore->flush(); // Empty the entire valuestore
+
+$valuestore->flushStartingWith('somekey'); // remove all items whose keys start with "somekey"
+
+$valuestore->increment('number'); // $valuestore->get('number') will return 1 
+$valuestore->increment('number'); // $valuestore->get('number') will return 2
+$valuestore->increment('number', 3); // $valuestore->get('number') will return 5
+
+// Valuestore implements ArrayAccess
+$valuestore['key'] = 'value';
+$valuestore['key']; // Returns 'value'
+isset($valuestore['key']); // Return true
+unset($valuestore['key']); // Equivalent to removing the value
+
+// Valuestore implements Countable
+count($valuestore); // Returns 0
+$valuestore->put('key', 'value');
+count($valuestore); // Returns 1
+```
+
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require :vendor_slug/:package_slug
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
+composer require bvtterfly/laravel-valuestore
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
+php artisan vendor:publish --tag="valuestore-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Valuestore Filesystem Disk
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the filesystem disk that should be used
+    | by the Valuestore.
+    */
+    'disk' => config('filesystems.default'),
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
 ```
 
 ## Usage
 
+To create a Valuestore use the `make` method.
+
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+$valuestore = Valuestore::make($pathToFile);
+```
+
+You can also pass some values as a second argument. These will be added to the valuestore using the `put` method.
+
+```php
+$valuestore = Valuestore::make($pathToFile, ['key' => 'value']);
+```
+
+All values will be saved as json in the given file.
+
+When there are no values stored, the file will be deleted.
+
+You can call the following methods on the `Valuestore`
+
+### put
+```php
+/**
+ * Put a value in the store.
+ *
+ * @param string|array $name
+ * @param string|int|null $value
+ * 
+ * @return $this
+ */
+public function put($name, $value = null)
+```
+
+### get
+
+```php
+/**
+ * Get a value from the store.
+ *
+ * @param string $name
+ *
+ * @return null|string
+ */
+public function get(string $name)
+```
+
+### has
+
+```php
+/*
+ * Determine if the store has a value for the given name.
+ */
+public function has(string $name) : bool
+```
+
+### all
+```php
+/**
+ * Get all values from the store.
+ *
+ * @return array
+ */
+public function all() : array
+```
+
+### allStartingWith
+```php
+/**
+ * Get all values from the store which keys start with the given string.
+ *
+ * @param string $startingWith
+ *
+ * @return array
+*/
+public function allStartingWith(string $startingWith = '') : array
+```
+
+### forget
+```php
+/**
+ * Forget a value from the store.
+ *
+ * @param string $key
+ *
+ * @return $this
+ */
+public function forget(string $key)
+```
+
+### flush
+```php
+/**
+ * Flush all values from the store.
+ *
+ * @return $this
+ */
+ public function flush()
+```
+
+### flushStartingWith
+```php
+/**
+ * Flush all values from the store which keys start with the specified value.
+ *
+ * @param string $startingWith
+ *
+ * @return $this
+ */
+ public function flushStartingWith(string $startingWith)
+```
+
+### pull
+```php
+/**
+ * Get and forget a value from the store.
+ *
+ * @param string $name 
+ *
+ * @return null|string
+ */
+public function pull(string $name)
+```
+
+### increment
+```php
+/**
+ * Increment a value from the store.
+ *
+ * @param string $name
+ * @param int $by
+ *
+ * @return int|null|string
+ */
+ public function increment(string $name, int $by = 1)
+```
+
+### decrement
+```php
+/**
+ * Decrement a value from the store.
+ *
+ * @param string $name
+ * @param int $by
+ *
+ * @return int|null|string
+ */
+ public function decrement(string $name, int $by = 1)
+```
+
+## push
+```php
+/**
+ * Push a new value into an array.
+ *
+ * @param string $name
+ * @param $pushValue
+ *
+ * @return $this
+ */
+public function push(string $name, $pushValue)
+```
+
+## prepend
+```php
+/**
+ * Prepend a new value into an array.
+ *
+ * @param string $name
+ * @param $prependValue
+ *
+ * @return $this
+ */
+public function prepend(string $name, $prependValue)
+```
+
+## count
+```php
+/**
+ * Count elements.
+ *
+ * @return int
+ */
+public function count()
 ```
 
 ## Testing
@@ -88,7 +291,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [ARI](https://github.com/bvtterfly)
 - [All Contributors](../../contributors)
 
 ## License

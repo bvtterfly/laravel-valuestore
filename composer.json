@@ -1,24 +1,25 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "bvtterfly/laravel-valuestore",
+    "description": "Easily store some values",
     "keywords": [
-        ":vendor_name",
+        "bvtterfly",
         "laravel",
-        ":package_slug"
+        "laravel-valuestore"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/bvtterfly/laravel-valuestore",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "ARI",
+            "email": "thearihdrn@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.0",
+        "illuminate/contracts": "^9.0",
         "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^9.0"
+        "spatie/valuestore": "^1.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0",
@@ -34,13 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Bvtterfly\\Valuestore\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Bvtterfly\\Valuestore\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -49,15 +49,19 @@
         "test-coverage": "vendor/bin/pest --coverage"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Bvtterfly\\Valuestore\\ValuestoreServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Valuestore": "Bvtterfly\\Valuestore\\Facades\\Valuestore"
             }
         }
     },
