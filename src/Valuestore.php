@@ -31,7 +31,6 @@ class Valuestore extends BaseValueStore
         parent::__construct();
     }
 
-
     /**
      * @param array $values
      *
