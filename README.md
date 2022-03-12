@@ -1,12 +1,9 @@
 # Laravel Valuestore
 
-[//]: # ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/bvtterfly/laravel-valuestore.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/bvtterfly/laravel-valuestore&#41;)
-
-[//]: # ([![GitHub Tests Action Status]&#40;https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/run-tests?label=tests&#41;]&#40;https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3Arun-tests+branch%3Amain&#41;)
-
-[//]: # ([![GitHub Code Style Action Status]&#40;https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/Check%20&%20fix%20styling?label=code%20style&#41;]&#40;https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain&#41;)
-
-[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/bvtterfly/laravel-valuestore.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/bvtterfly/laravel-valuestore&#41;)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bvtterfly/laravel-valuestore.svg?style=flat-square)](https://packagist.org/packages/bvtterfly/laravel-valuestore)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/run-tests?label=tests)](https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/Check%20&%20fix%20styling?label=code%20style)](https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/bvtterfly/laravel-valuestore.svg?style=flat-square)](https://packagist.org/packages/bvtterfly/laravel-valuestore)
 
 This package makes it easy to store and retrieve some loose values. The values are saved as JSON files. The package integrates with the Laravel filesystem by extending the `spatie/valuestore` package.
 
