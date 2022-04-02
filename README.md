@@ -5,7 +5,8 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/bvtterfly/laravel-valuestore/Check%20&%20fix%20styling?label=code%20style)](https://github.com/bvtterfly/laravel-valuestore/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/bvtterfly/laravel-valuestore.svg?style=flat-square)](https://packagist.org/packages/bvtterfly/laravel-valuestore)
 
-This package makes it easy to store and retrieve some loose values. The values are saved as JSON files. The package integrates with the Laravel filesystem by extending the `spatie/valuestore` package.
+This package makes it easy to store and retrieve some loose values. The values are saved as JSON/Yaml files. 
+The package integrates with the Laravel filesystem and adds Yaml support by extending the `spatie/valuestore` package.
 
 It can be used like this:
 
@@ -97,7 +98,7 @@ You can also pass some values as a second argument. These will be added to the v
 $valuestore = Valuestore::make($pathToFile, ['key' => 'value']);
 ```
 
-All values will be saved as json in the given file.
+All values will be saved as json/yaml in the given file.
 
 When there are no values stored, the file will be deleted.
 

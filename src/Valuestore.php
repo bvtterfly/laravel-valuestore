@@ -2,6 +2,7 @@
 
 namespace Bvtterfly\Valuestore;
 
+use Bvtterfly\Valuestore\Codecs\Codec;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Valuestore\Valuestore as BaseValueStore;
@@ -14,10 +15,11 @@ class Valuestore extends BaseValueStore
      *
      * @return Valuestore
      */
-    public static function make(string $fileName, array $values = null)
+    public static function make(string $fileName, array $values = null): self
     {
         $filesystem = Storage::disk(config('valuestore.disk'));
-        $valuestore = (new Valuestore($filesystem))->setFileName($fileName);
+        $codec = CodecManager::get(CodecManager::guessType($fileName));
+        $valuestore = (new self($filesystem, $codec))->setFileName($fileName);
 
         if (! is_null($values)) {
             $valuestore->put($values);
@@ -26,7 +28,7 @@ class Valuestore extends BaseValueStore
         return $valuestore;
     }
 
-    protected function __construct(protected Filesystem $filesystem)
+    protected function __construct(protected Filesystem $filesystem, protected Codec $codec)
     {
         parent::__construct();
     }
@@ -38,7 +40,7 @@ class Valuestore extends BaseValueStore
      */
     protected function setContent(array $values)
     {
-        $this->filesystem->put($this->fileName, json_encode($values));
+        $this->filesystem->put($this->fileName, $this->codec->encode($values));
 
         if (! count($values)) {
             $this->filesystem->delete($this->fileName);
@@ -58,6 +60,6 @@ class Valuestore extends BaseValueStore
             return [];
         }
 
-        return json_decode($this->filesystem->get($this->fileName), true) ?? [];
+        return $this->codec->decode($this->filesystem->get($this->fileName)) ?? [];
     }
 }
