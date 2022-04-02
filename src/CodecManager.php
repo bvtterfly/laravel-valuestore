@@ -15,7 +15,7 @@ class CodecManager
         return match ($type) {
             'json' => app(Json::class),
             'yaml' => app(Yaml::class),
-            default => throw new UnknownCodecException
+            default => throw new UnknownCodecException()
         };
     }
 
