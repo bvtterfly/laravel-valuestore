@@ -310,6 +310,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [ARI](https://github.com/bvtterfly)
 - [All Contributors](../../contributors)
 
+[Tim MacDonald](https://github.com/timacdonald) was the original developer of the `CachedValuestore`. We slightly polished the code he created in the [repo](https://github.com/timacdonald/cached-valuestore).
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
