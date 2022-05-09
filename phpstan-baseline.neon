@@ -4,3 +4,7 @@ parameters:
 			message: "#^Dead catch - JsonException is never thrown in the try block.$#"
 			count: 1
 			path: src/Codecs/Json.php
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Valuestore.php

@@ -102,7 +102,25 @@ All values will be saved as json/yaml in the given file.
 
 When there are no values stored, the file will be deleted.
 
-You can call the following methods on the `Valuestore`
+### Cached Valuestore
+
+`Valuestore` would call the `all` method behind the scene to get values from the store every time.
+
+`CachedValuestore` is an extension of `Valuestore` with a local cache.  With `CachedValuestore`, the `all` method gets values from the cache instead of reading the file to get the store values.
+```php
+$valuestore = CachedValuestore::make($pathToFile);
+```
+
+If you want to clear the cache, You can use the `clearCache` method.
+It is done during persistence, so you are unlikely to need it.
+
+```php
+$valuestore->clearCache();
+```
+
+## Valuestore methods
+
+You can call the following methods on the `Valuestore` & `CachedValuestore`
 
 ### put
 ```php

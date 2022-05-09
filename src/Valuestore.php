@@ -13,13 +13,13 @@ class Valuestore extends BaseValueStore
      * @param string $fileName
      * @param array|null $values
      *
-     * @return Valuestore
+     * @return static
      */
-    public static function make(string $fileName, array $values = null): self
+    public static function make(string $fileName, array $values = null): static
     {
         $filesystem = Storage::disk(config('valuestore.disk'));
         $codec = CodecManager::get(CodecManager::guessType($fileName));
-        $valuestore = (new self($filesystem, $codec))->setFileName($fileName);
+        $valuestore = (new static($filesystem, $codec))->setFileName($fileName);
 
         if (! is_null($values)) {
             $valuestore->put($values);
@@ -36,7 +36,7 @@ class Valuestore extends BaseValueStore
     /**
      * @param array $values
      *
-     * @return Valuestore
+     * @return $this
      */
     protected function setContent(array $values)
     {
